@@ -1,21 +1,59 @@
 import { navBar } from '../pageObjects/navBar'
 import { loginForm } from '../pageObjects/loginForm'
 import { navBarLocators } from '../locators/navBarLocators'
-import { loginFormLocators } from '../locators/loginFormLocators'
 
 describe('login', () => {
-  const USERNAME = 'd.kruhlov.de@gmail.com'
+  const USERNAME = 'testcypress@gmail.com'
   const PASSWORD = 'Testpass@123'
+  const INVALID_USERNAME = 'does-not-exist-user'
+  const SOME_PASSWORD = 'somePassword123'
+
+  const ALERTS = {
+    userDoesNotExist: 'User does not exist.',
+    blankFields: 'Please fill out Username and Password.',
+    wrongPassword: 'Wrong password.',
+  }
+
+  beforeEach(() => {
+    cy.visit('/')
+  })
 
   it('logs in with valid credentials', () => {
-    cy.visit('/')
-
     navBar.openLoginModal()
-    cy.get(loginFormLocators.modalLabel).should('be.visible')
 
     loginForm.login(USERNAME, PASSWORD)
 
     cy.get(navBarLocators.loggedUserName).should('contain.text', USERNAME)
     cy.getLoggedUserEmail().should('eq', USERNAME)
+  })
+
+  it(`shows an alert "${ALERTS.userDoesNotExist}" when the user does not exist`, () => {
+    loginForm.interceptAlert()
+
+    navBar.openLoginModal()
+    loginForm.login(INVALID_USERNAME, SOME_PASSWORD)
+
+    loginForm.expectAlert(ALERTS.userDoesNotExist)
+    cy.get(navBarLocators.login).should('be.visible')
+  })
+
+  it(`shows an alert "${ALERTS.blankFields}" when username and password are blank`, () => {
+    loginForm.interceptAlert()
+
+    navBar.openLoginModal()
+    loginForm.submit()
+
+    loginForm.expectAlert(ALERTS.blankFields)
+    cy.get(navBarLocators.login).should('be.visible')
+  })
+
+  it(`shows an alert "${ALERTS.wrongPassword}" when the password is wrong`, () => {
+    loginForm.interceptAlert()
+
+    navBar.openLoginModal()
+    loginForm.login(USERNAME, SOME_PASSWORD)
+
+    loginForm.expectAlert(ALERTS.wrongPassword)
+    cy.get(navBarLocators.login).should('be.visible')
   })
 })
