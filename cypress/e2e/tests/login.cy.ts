@@ -28,32 +28,32 @@ describe('login', () => {
   })
 
   it(`shows an alert "${ALERTS.userDoesNotExist}" when the user does not exist`, () => {
-    loginForm.interceptAlert()
+    cy.interceptAlert()
 
     navBar.openLoginModal()
     loginForm.login(INVALID_USERNAME, SOME_PASSWORD)
 
-    loginForm.expectAlert(ALERTS.userDoesNotExist)
+    cy.expectAlert(ALERTS.userDoesNotExist)
     cy.get(navBarLocators.login).should('be.visible')
   })
 
   it(`shows an alert "${ALERTS.blankFields}" when username and password are blank`, () => {
-    loginForm.interceptAlert()
+    cy.interceptAlert()
 
     navBar.openLoginModal()
     loginForm.submit()
 
-    loginForm.expectAlert(ALERTS.blankFields)
+    cy.expectAlert(ALERTS.blankFields)
     cy.get(navBarLocators.login).should('be.visible')
   })
 
   it(`shows an alert "${ALERTS.wrongPassword}" when the password is wrong`, () => {
-    loginForm.interceptAlert()
+    cy.interceptAlert()
 
     navBar.openLoginModal()
     loginForm.login(USERNAME, SOME_PASSWORD)
 
-    loginForm.expectAlert(ALERTS.wrongPassword)
+    cy.expectAlert(ALERTS.wrongPassword)
     cy.get(navBarLocators.login).should('be.visible')
   })
 })
