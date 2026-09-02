@@ -13,8 +13,10 @@ Cypress.Commands.add('interceptAlert', () => {
   })
 })
 
+// Cypress.sinon.match(string) matches on a substring, so callers pass the part of
+// the message they care about - the site is not consistent about trailing dots
 Cypress.Commands.add('expectAlert', (expectedText: string) => {
-  cy.get('@windowAlert').should('have.been.calledWith', expectedText)
+  cy.get('@windowAlert').should('have.been.calledWith', Cypress.sinon.match(expectedText))
 })
 
 declare global {

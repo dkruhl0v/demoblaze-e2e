@@ -5,6 +5,11 @@ export interface PickedProduct {
   price: number
 }
 
+const readCard = ($card: JQuery<HTMLElement>): PickedProduct => ({
+  title: $card.find(productListLocators.productCardTitleLink).text().trim(),
+  price: Number($card.find(productListLocators.productCardPrice).text().replace('$', '').trim()),
+})
+
 export const productListPage = {
   openCategory(name: Category) {
     cy.intercept('POST', '**/bycat').as('byCategory')
@@ -16,20 +21,22 @@ export const productListPage = {
     return cy.get(productListLocators.productCard)
   },
 
-  pickRandomProduct() {
+  pickRandomProducts(count: number) {
     return this.getProductCards().then(($cards) => {
-      const index = Math.floor(Math.random() * $cards.length)
-      const $card = $cards.eq(index)
+      const indexes = Cypress._.sampleSize(Cypress._.range($cards.length), count)
+      const products = indexes.map((index) => readCard($cards.eq(index)))
 
-      const title = $card.find(productListLocators.productCardTitleLink).text().trim()
-      const price = Number(
-        $card.find(productListLocators.productCardPrice).text().replace('$', '').trim()
+      cy.log(
+        `picked ${count} of ${$cards.length} products: ` +
+          products.map((p) => `"${p.title}" ($${p.price})`).join(', ')
       )
 
-      cy.log(`picked product ${index + 1} of ${$cards.length}: "${title}" ($${price})`)
-
-      return cy.wrap({ title, price } as PickedProduct, { log: false })
+      return cy.wrap(products, { log: false })
     })
+  },
+
+  pickRandomProduct() {
+    return this.pickRandomProducts(1).then((products) => products[0])
   },
 
   openProduct(title: string) {

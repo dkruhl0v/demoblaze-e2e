@@ -2,6 +2,7 @@ export const cartLocators = {
   cartRows: '#tbodyid tr',
   productTitleCell: 'td:nth-child(2)',
   productPriceCell: 'td:nth-child(3)',
+  deleteItemLink: '[onclick^="deleteItem"]',
   totalPrice: '#totalp',
   placeOrderButton: '[data-target="#orderModal"]',
 

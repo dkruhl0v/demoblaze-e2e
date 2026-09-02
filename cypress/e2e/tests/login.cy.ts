@@ -21,7 +21,7 @@ describe('login', () => {
   it('logs in with valid credentials', () => {
     navBar.openLoginModal()
 
-    loginForm.login(USERNAME, PASSWORD)
+    loginForm.loginSuccessfully(USERNAME, PASSWORD)
 
     cy.get(navBarLocators.loggedUserName).should('contain.text', USERNAME)
     cy.getLoggedUserEmail().should('eq', USERNAME)
@@ -56,4 +56,7 @@ describe('login', () => {
     cy.expectAlert(ALERTS.wrongPassword)
     cy.get(navBarLocators.login).should('be.visible')
   })
+
+  // TODO: add tests for username and password fields validation once the shop has this
+  // validation implemented.
 })
