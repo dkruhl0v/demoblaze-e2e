@@ -1,10 +1,10 @@
 import { navBar } from '../pageObjects/navBar'
 import { loginForm } from '../pageObjects/loginForm'
 import { navBarLocators } from '../locators/navBarLocators'
+import { validUser } from '../testData/users'
 
 describe('login', () => {
-  const USERNAME = 'testcypress@gmail.com'
-  const PASSWORD = 'Testpass@123'
+  const { username: USERNAME, password: PASSWORD } = validUser
   const INVALID_USERNAME = 'does-not-exist-user'
   const SOME_PASSWORD = 'somePassword123'
 

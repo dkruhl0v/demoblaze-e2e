@@ -4,10 +4,10 @@ import { productListPage, PickedProduct } from '../pageObjects/productListPage'
 import { productPage } from '../pageObjects/productPage'
 import { cart, OrderDetails } from '../pageObjects/cart'
 import { navBarLocators } from '../locators/navBarLocators'
+import { validUser } from '../testData/users'
 
 describe('purchase', () => {
-  const USERNAME = 'testcypress@gmail.com'
-  const PASSWORD = 'Testpass@123'
+  const { username: USERNAME, password: PASSWORD } = validUser
 
   const ALERTS = {
     // logged in user gets "Product added.", a guest "Product added" - the
