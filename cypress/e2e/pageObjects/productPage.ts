@@ -15,6 +15,8 @@ export const productPage = {
   },
 
   addToCart() {
+    cy.intercept('POST', '**/addtocart').as('addToCart')
     cy.get(productPageLocators.addToCartButton).click()
+    cy.wait('@addToCart')
   },
 }
