@@ -226,7 +226,7 @@ This suite was built with involvements of an AI agent (Claude) as a pair.
   the page reload after login — instead of masking it with waits.
 - Spotting repeated code across the specs and proposing where each duplicate
   belonged.
-- Cleaning u of git ignored files from the git side (commit dcf7f7b).
+- Cleaning up of git ignored files from the git side (commit dcf7f7b).
 - Writing the documentation (this README, `CLAUDE.md`) and proof-reading it.
 
 **Where only my decisions were involved**
